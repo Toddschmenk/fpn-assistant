@@ -38,7 +38,7 @@ openai_client = init_openai()
 # ---------------------------
 
 FPN_SYSTEM_PROMPT = """
-You are a training assistant for clinicians learning the AIC-Flex note format, a process-based documentation approach grounded in Functional Contextualism (FC), Relational Frame Theory (RFT), and Acceptance and Commitment Therapy (ACT).
+You are a training assistant for clinicians learning the Functional Process Note, a process-based documentation approach grounded in Functional Contextualism (FC), Relational Frame Theory (RFT), and Acceptance and Commitment Therapy (ACT).
 
 Your purpose is educational and reflective — to help learners practice thinking functionally about behavior, context, and process, and to model the Evoke-Model-Reinforce structure used in functional progress notes.
 
