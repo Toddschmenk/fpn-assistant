@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Authenticating...</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: #f5f5f5;
+        }
+        .loading {
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="loading">
+        <h2>Logging you in...</h2>
+        <p>Please wait...</p>
+    </div>
+    
+    <script>
+        // Get tokens from URL hash
+        const hash = window.location.hash.substring(1);
+        const params = new URLSearchParams(hash);
+        
+        const accessToken = params.get('access_token');
+        const refreshToken = params.get('refresh_token');
+        
+        if (accessToken && refreshToken) {
+            // Redirect to main app with query params
+            window.location.href = `/?access_token=${accessToken}&refresh_token=${refreshToken}`;
+        } else {
+            // No tokens found, go back to login
+            window.location.href = '/';
+        }
+    </script>
+</body>
+</html>
+```
+
+5. **Commit the file**
+
+---
+
+## **Now Update Supabase Redirect URL:**
+
+1. **Go to Supabase** → **Authentication** → **URL Configuration**
+
+2. **Change the redirect URL to:**
+```
+   https://fpn-assistant.onrender.com/callback.html
