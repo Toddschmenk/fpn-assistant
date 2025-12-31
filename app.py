@@ -164,20 +164,6 @@ def send_magic_link(email):
         if "User not found" in error_msg or "not authorized" in error_msg:
             return False, "This email is not authorized. Please contact the administrator."
         return False, f"Error: {error_msg}"
-```
-
-**Changes:**
-- ✅ Kept `email_redirect_to` pointing to `/callback.html`
-- ❌ Removed the conflicting `redirect_to` line
-- ✅ Kept `should_create_user: False` for invite-only
-
----
-
-**Commit this change, wait for Render to redeploy, then test again!**
-
-The email link should now say:
-```
-redirect_to=https://fpn-assistant.onrender.com/callback.html
 
 def handle_auth_callback():
     """Handle the magic link callback from hash fragments"""
