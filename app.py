@@ -155,7 +155,7 @@ def send_magic_link(email):
         response = supabase.auth.sign_in_with_otp({
             "email": email,
             "options": {
-                "email_redirect_to": f"{app_url}?auth=callback",
+              "email_redirect_to": f"{app_url}/callback.html",
                 "should_create_user": False,
                 "redirect_to": f"{app_url}?auth=callback"
             }
