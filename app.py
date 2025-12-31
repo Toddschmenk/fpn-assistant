@@ -177,6 +177,18 @@ def login_with_password(email: str, password: str):
     except Exception as e:
         return False, str(e)
 
+def create_account(email: str, password: str):
+    """Create a new Supabase user with email and password, then log them in."""
+    try:
+        # Create the user
+        supabase.auth.sign_up({
+            "email": email,
+            "password": password,
+        })
+        # Immediately try logging in
+        return login_with_password(email, password)
+    except Exception as e:
+        return False, str(e)
 
 # ---------------------------
 # OPENAI CALL
@@ -213,7 +225,7 @@ def generate_fpn(narrative: str) -> str:
 
 def main():
 
-    # LOGIN VIEW
+        # LOGIN VIEW
     if "user" not in st.session_state:
         st.title("📝 FPN Assistant – Training Simulation")
         st.subheader("Secure Login")
@@ -221,18 +233,35 @@ def main():
         email = st.text_input("Email")
         password = st.text_input("Password", type="password")
 
-        if st.button("Log In"):
-            if not email or not password:
-                st.error("Please enter both email and password.")
-            else:
-                with st.spinner("Authenticating..."):
-                    ok, msg = login_with_password(email, password)
-                    if ok:
-                        st.rerun()
-                    else:
-                        st.error(msg)
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("Log In"):
+                if not email or not password:
+                    st.error("Please enter both email and password.")
+                else:
+                    with st.spinner("Authenticating..."):
+                        ok, msg = login_with_password(email, password)
+                        if ok:
+                            st.rerun()
+                        else:
+                            st.error(msg)
+
+        with col2:
+            if st.button("Create Account"):
+                if not email or not password:
+                    st.error("Please enter both email and password to create an account.")
+                else:
+                    with st.spinner("Creating account..."):
+                        ok, msg = create_account(email, password)
+                        if ok:
+                            st.success("Account created and logged in.")
+                            st.rerun()
+                        else:
+                            st.error(msg)
+
         # Stop rendering here until logged in
         return
+
 
     # LOGGED-IN VIEW
     st.title("📝 FPN Assistant – Training Simulation")
