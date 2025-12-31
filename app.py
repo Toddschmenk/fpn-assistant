@@ -165,6 +165,8 @@ def send_magic_link(email):
         return False, f"Error: {error_msg}"
 
 def handle_auth_callback():
+    """Handle the magic link callback from hash fragments"""
+    # Check query params first (fallback)
     params = st.query_params
     
     if "access_token" in params and "refresh_token" in params:
@@ -180,6 +182,25 @@ def handle_auth_callback():
                 st.rerun()
         except Exception as e:
             st.error(f"Authentication error: {e}")
+    
+    # Check for hash fragments (primary method for magic links)
+    if "user" not in st.session_state:
+        # Use JavaScript to check hash and reload with query params
+        hash_check = """
+        <script>
+        if (window.location.hash) {
+            const hash = window.location.hash.substring(1);
+            const params = new URLSearchParams(hash);
+            if (params.has('access_token') && params.has('refresh_token')) {
+                // Convert hash to query params and reload
+                window.location.href = window.location.origin + window.location.pathname + 
+                    '?access_token=' + params.get('access_token') + 
+                    '&refresh_token=' + params.get('refresh_token');
+            }
+        }
+        </script>
+        """
+        st.components.v1.html(hash_check, height=0)
 
 def check_session():
     try:
